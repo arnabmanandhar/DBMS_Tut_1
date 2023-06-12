@@ -1,3 +1,10 @@
+-----------------------------------------------------------------------------------------------------------------
+		
+-- Date		: Monday, June 12, 2023
+-- Author	: Arnab Manandhar
+-- Roll		: THA077BEI008
+------------------------------------------------------------------------------------------------------------------
+
 CREATE DATABASE db7;
 DROP DATABASE db7;
 
@@ -8,6 +15,7 @@ CREATE TABLE tbl_Employee (
         PRIMARY KEY(employee_name)
     );
  DROP TABLE tbl_Employee;
+ SELECT * FROM tbl_Employee;
  
 CREATE TABLE tbl_Works (
         employee_name1 VARCHAR(255) NOT NULL,
@@ -16,13 +24,15 @@ CREATE TABLE tbl_Works (
         salary DECIMAL(10, 2)
     );
 DROP TABLE tbl_Works;
- 
+SELECT * FROM tbl_Works;
+
 CREATE TABLE tbl_Company (
         company_name VARCHAR(255) NOT NULL,
         city VARCHAR(255),
         PRIMARY KEY(company_name)
     );
 DROP TABLE tbl_Company;
+SELECT * FROM tbl_Company;
  
 CREATE TABLE tbl_Manages (
         employee_name2 VARCHAR(255) NOT NULL,
@@ -31,7 +41,8 @@ CREATE TABLE tbl_Manages (
     );
 
 DROP TABLE tbl_Manages;
- 
+SELECT * FROM tbl_Manages;
+
 INSERT INTO tbl_Employee (employee_name, street, city)
 VALUES  ('Alice Williams','321 Maple St','Houston'), 
 		('Sara Davis','159 Broadway','New York'), 
