@@ -1,5 +1,5 @@
 -----------------------------------------------------------------------------------------------------------------
-		
+		TUTORIAL 1
 -- Date		: Monday, June 12, 2023
 -- Author	: Arnab Manandhar
 -- Roll		: THA077BEI008
@@ -154,44 +154,52 @@ JOIN tbl_works ON tbl_employee.employee_name = tbl_works.employee_name1
 JOIN tbl_company ON tbl_works.company_name = tbl_company.company_name
 WHERE tbl_employee.city = tbl_company.city;
 
-(e) SELECT tbl_employee.employee_name, tbl_employee.city, tbl_manages.manager_name FROM tbl_employee
+--(e) 
+
+SELECT tbl_employee.employee_name, tbl_employee.city, tbl_manages.manager_name FROM tbl_employee
 JOIN tbl_works ON tbl_employee.employee_name = tbl_works.employee_name1
 JOIN tbl_company ON tbl_works.company_name = tbl_company.company_name
 JOIN tbl_manages ON tbl_employee.employee_name = tbl_manages.employee_name2
 JOIN tbl_employee AS manager ON tbl_manages.manager_name = manager.employee_name
 WHERE tbl_employee.city = manager.city AND tbl_employee.street = manager.street;
 
-(f) SELECT employee_name FROM tbl_employee
+--(f) Find all employees in the database who do not work for First Bank Corporation.
+SELECT employee_name FROM tbl_employee
 WHERE employee_name NOT IN (SELECT employee_name FROM tbl_works
 WHERE company_name = 'First Bank Corporation');
 
-(g) SELECT employee_name FROM tbl_employee
+--(g)	Find all employees in the database who earn more than each employee of Small Bank Corporation.
+SELECT employee_name FROM tbl_employee
 JOIN tbl_works ON tbl_employee.employee_name = tbl_works.employee_name1
 WHERE tbl_works.salary > (SELECT MAX(salary) FROM tbl_works
 WHERE company_name = 'Small Bank Corporation');
 
-(h) SELECT DISTINCT tbl_company.company_name FROM tbl_company
+--(h)	Assume that the companies may be located in several cities. Find all companies located in every city in which Small Bank Corporation is located.
+SELECT DISTINCT tbl_company.company_name FROM tbl_company
 WHERE NOT EXISTS (SELECT city FROM tbl_company
 WHERE company_name = 'Small Bank Corporation'
 AND city NOT IN (SELECT city FROM tbl_company
 WHERE company_name = 'Small Bank Corporation'));
 
-(i) SELECT tbl_employee.employee_name FROM tbl_employee
+--(i)	Find all employees who earn more than the average salary of all employees of their company.
+SELECT tbl_employee.employee_name FROM tbl_employee
 JOIN tbl_works ON tbl_employee.employee_name = tbl_works.employee_name1
 WHERE tbl_works.salary > (SELECT AVG(salary) FROM tbl_works);
 
-(j)SELECT company_name FROM tbl_company
+--(j)	Find the company that has the most employees.
+SELECT company_name FROM tbl_company
 WHERE (SELECT COUNT(employee_name1) FROM tbl_works
 WHERE tbl_company.company_name = tbl_works.company_name) = 
       (SELECT MAX(emp_count) FROM (SELECT company_name, COUNT(employee_name1) AS emp_count
                                    FROM tbl_works GROUP BY company_name) AS subquery);
 
-(k) SELECT company_name FROM tbl_company
+--(k)	Find the company that has the smallest payroll.
+SELECT company_name FROM tbl_company
 WHERE (SELECT SUM(salary) FROM tbl_works WHERE tbl_company.company_name = tbl_works.company_name) = 
 (SELECT MIN(payroll_sum) FROM (SELECT company_name, SUM(salary) AS payroll_sum FROM tbl_works GROUP BY company_name) AS subquery);
 
-
-(l) SELECT tbl_company.company_name FROM tbl_company
+--(l)	Find those companies whose employees earn a higher salary, on average, than the average salary at First Bank Corporation.
+SELECT tbl_company.company_name FROM tbl_company
 JOIN tbl_works ON tbl_company.company_name = tbl_works.company_name
 GROUP BY tbl_company.company_name
 HAVING AVG(tbl_works.salary) > (SELECT AVG(salary) FROM tbl_works
