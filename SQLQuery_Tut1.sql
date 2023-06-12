@@ -104,8 +104,8 @@ AND company_name = 'First Bank Corporation';
 
 
 
---Using Subqueries
-
+-----------------------------------------------Using Subqueries----------------------------------------------------------------------------------------
+--Q2
 --(a)Find the names of all employees who work for First Bank Corporation.
 SELECT employee_name FROM tbl_employee WHERE employee_name IN (SELECT employee_name FROM tbl_works WHERE company_name = 'First Bank Corporation');
 
@@ -113,15 +113,12 @@ SELECT employee_name FROM tbl_employee WHERE employee_name IN (SELECT employee_n
 SELECT employee_name, city FROM tbl_employee WHERE employee_name IN (SELECT employee_name FROM tbl_works WHERE company_name = 'First Bank Corporation');
 
 --(c)	Find the names, street addresses, and cities of residence of all employees who work for First Bank Corporation and earn more than $10,000.
-
 SELECT employee_name, street, city FROM tbl_employee WHERE employee_name IN (SELECT employee_name FROM tbl_works WHERE company_name = 'First Bank Corporation' AND salary > 10000);
 
 --(d)	Find all employees in the database who live in the same cities as the companies for which they work.
-
 SELECT employee_name FROM tbl_employee WHERE city IN (SELECT city FROM tbl_company WHERE company_name IN (SELECT company_name FROM tbl_works WHERE tbl_works.employee_name = tbl_employee.employee_name));
 
 --(e)	Find all employees in the database who live in the same cities and on the same streets as do their managers.
-
 SELECT employee_name 
 FROM tbl_employee
 WHERE city IN (SELECT city FROM tbl_employee 
@@ -131,31 +128,34 @@ WHERE employee_name2 = tbl_employee.employee_name));
 
 
 
---Using Join
-
-(a) SELECT employee_name FROM tbl_employee
+--------------------------------------------------Using Join----------------------------------------------------------------------------------------
+--Q2
+--(a)	Find the names of all employees who work for First Bank Corporation.
+SELECT employee_name FROM tbl_employee
 JOIN tbl_works ON tbl_employee.employee_name = tbl_works.employee_name1
 JOIN tbl_company ON tbl_works.company_name = tbl_company.company_name
 WHERE tbl_company.company_name = 'First Bank Corporation';
 
-(b) SELECT employee_name, tbl_employee.city FROM tbl_employee
+--(b)	Find the names and cities of residence of all employees who work for First Bank Cor-poration.
+SELECT employee_name, tbl_employee.city FROM tbl_employee
 JOIN tbl_works ON tbl_employee.employee_name = tbl_works.employee_name1
 JOIN tbl_company ON tbl_works.company_name = tbl_company.company_name
 WHERE tbl_company.company_name = 'First Bank Corporation';
 
-(c) SELECT e.employee_name, street, e.city FROM tbl_employee AS e
+--(c)	Find the names, street addresses, and cities of residence of all employees who work for First Bank Corporation and earn more than $10,000. 
+SELECT e.employee_name, street, e.city FROM tbl_employee AS e
 JOIN tbl_works ON e.employee_name = tbl_works.employee_name1
 JOIN tbl_company ON tbl_works.company_name = tbl_company.company_name
 WHERE tbl_company.company_name = 'First Bank Corporation'
 AND tbl_works.salary > 10000;
 
-(d) SELECT tbl_employee.employee_name FROM tbl_employee
+--(d)	Find all employees in the database who live in the same cities as the companies for which they work.
+SELECT tbl_employee.employee_name FROM tbl_employee
 JOIN tbl_works ON tbl_employee.employee_name = tbl_works.employee_name1
 JOIN tbl_company ON tbl_works.company_name = tbl_company.company_name
 WHERE tbl_employee.city = tbl_company.city;
 
---(e) 
-
+--(e)	Find all employees in the database who live in the same cities and on the same streets as do their managers.
 SELECT tbl_employee.employee_name, tbl_employee.city, tbl_manages.manager_name FROM tbl_employee
 JOIN tbl_works ON tbl_employee.employee_name = tbl_works.employee_name1
 JOIN tbl_company ON tbl_works.company_name = tbl_company.company_name
@@ -163,7 +163,7 @@ JOIN tbl_manages ON tbl_employee.employee_name = tbl_manages.employee_name2
 JOIN tbl_employee AS manager ON tbl_manages.manager_name = manager.employee_name
 WHERE tbl_employee.city = manager.city AND tbl_employee.street = manager.street;
 
---(f) Find all employees in the database who do not work for First Bank Corporation.
+--(f)	Find all employees in the database who do not work for First Bank Corporation.
 SELECT employee_name FROM tbl_employee
 WHERE employee_name NOT IN (SELECT employee_name FROM tbl_works
 WHERE company_name = 'First Bank Corporation');
