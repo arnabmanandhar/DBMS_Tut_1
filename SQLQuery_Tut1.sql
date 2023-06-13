@@ -9,7 +9,7 @@
 --		tbl_works(employee_name, company_name, salary) 
 --		tbl_company(company_name, city)
 --		tbl_manages (employee_name, manager_name) 
---					Figure:Employee Database
+--			Figure:Employee Database
 
 --Q1.	Give an SQL schema deﬁnition for the employee database of the above figure. Choose an appropriate primary key 
 --	for each relation schema, and insert any other integrity constraints (for example, foreign keys) you ﬁnd necessary.
