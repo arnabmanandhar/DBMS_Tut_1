@@ -5,6 +5,15 @@
 -- Roll		: THA077BEI008
 ------------------------------------------------------------------------------------------------------------------
 
+--		tbl_employee(employee_name, street, city) 
+--		tbl_works(employee_name, company_name, salary) 
+--		tbl_company(company_name, city)
+--		tbl_manages (employee_name, manager_name) 
+--					Figure:Employee Database
+
+--Q1.	Give an SQL schema deﬁnition for the employee database of the above figure. Choose an appropriate primary key 
+--		for each relation schema, and insert any other integrity constraints (for example, foreign keys) you ﬁnd necessary.
+
 CREATE DATABASE db7;
 DROP DATABASE db7;
 
@@ -102,21 +111,30 @@ WHERE
     employee_name1 = 'John Smith'
 AND company_name = 'First Bank Corporation';
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+--Q2.	Consider the employee database of Figure 5, where the primary keys are underlined. Give an expression in SQL for each of the following queries:
 
+-----(i) Using Subqueries
 
------------------------------------------------Using Subqueries----------------------------------------------------------------------------------------
---Q2
 --(a)Find the names of all employees who work for First Bank Corporation.
-SELECT employee_name FROM tbl_employee WHERE employee_name IN (SELECT employee_name FROM tbl_works WHERE company_name = 'First Bank Corporation');
+SELECT employee_name 
+FROM tbl_employee 
+WHERE employee_name IN (SELECT employee_name FROM tbl_works WHERE company_name = 'First Bank Corporation');
 
 --(b)	Find the names and cities of residence of all employees who work for First Bank Cor-poration.
-SELECT employee_name, city FROM tbl_employee WHERE employee_name IN (SELECT employee_name FROM tbl_works WHERE company_name = 'First Bank Corporation');
+SELECT employee_name, city 
+FROM tbl_employee 
+WHERE employee_name IN (SELECT employee_name FROM tbl_works WHERE company_name = 'First Bank Corporation');
 
 --(c)	Find the names, street addresses, and cities of residence of all employees who work for First Bank Corporation and earn more than $10,000.
-SELECT employee_name, street, city FROM tbl_employee WHERE employee_name IN (SELECT employee_name FROM tbl_works WHERE company_name = 'First Bank Corporation' AND salary > 10000);
+SELECT employee_name, street, city 
+FROM tbl_employee 
+WHERE employee_name IN (SELECT employee_name FROM tbl_works WHERE company_name = 'First Bank Corporation' AND salary > 10000);
 
 --(d)	Find all employees in the database who live in the same cities as the companies for which they work.
-SELECT employee_name FROM tbl_employee WHERE city IN (SELECT city FROM tbl_company WHERE company_name IN (SELECT company_name FROM tbl_works WHERE tbl_works.employee_name = tbl_employee.employee_name));
+SELECT employee_name 
+FROM tbl_employee 
+WHERE city IN (SELECT city FROM tbl_company WHERE company_name IN (SELECT company_name FROM tbl_works WHERE tbl_works.employee_name = tbl_employee.employee_name));
 
 --(e)	Find all employees in the database who live in the same cities and on the same streets as do their managers.
 SELECT employee_name 
@@ -128,8 +146,8 @@ WHERE employee_name2 = tbl_employee.employee_name));
 
 
 
---------------------------------------------------Using Join----------------------------------------------------------------------------------------
---Q2
+-----(ii) Using JOIN
+
 --(a)	Find the names of all employees who work for First Bank Corporation.
 SELECT employee_name FROM tbl_employee
 JOIN tbl_works ON tbl_employee.employee_name = tbl_works.employee_name1
@@ -204,3 +222,37 @@ JOIN tbl_works ON tbl_company.company_name = tbl_works.company_name
 GROUP BY tbl_company.company_name
 HAVING AVG(tbl_works.salary) > (SELECT AVG(salary) FROM tbl_works
 WHERE company_name = 'First Bank Corporation');
+
+-----------------------------------------------------------------------------------------------------------------------
+--Q3. Consider the relational database of Figure 5. Give an expression in SQL for each of the following queries:
+
+--(a) Modify the database so that Jones now lives in Newtown.
+UPDATE tbl_employee 
+SET city = 'Newtown' 
+WHERE employee_name = 'Jones';
+
+--(b)	Give all employees of First Bank Corporation a 10 percent raise.
+UPDATE tbl_works 
+SET salary = salary * 1.1 
+WHERE company_name = 'First Bank Corporation';
+
+--(c)	Give all managers of First Bank Corporation a 10 percent raise.
+UPDATE tbl_works 
+SET salary = salary * 1.1 
+WHERE company_name = 'First Bank Corporation' 
+AND employee_name1 IN (SELECT employee_name2 FROM tbl_manages);
+
+--(d)	Give all managers of First Bank Corporation a 10 percent raise unless the salary be-comes greater than $100,000; in such cases, give only a 3 percent raise.
+UPDATE tbl_works 
+SET salary =
+CASE
+	WHEN salary * 1.1 <= 100000 THEN salary * 1.1
+	ELSE salary * 1.03
+END
+WHERE company_name = 'First Bank Corporation' 
+AND employee_name1 IN (SELECT employee_name2 FROM tbl_manages);
+
+--(e)	Delete all tuples in the works relation for employees of Small Bank Corporation.
+DELETE FROM tbl_works 
+WHERE employee_name1 
+IN (SELECT employee_name1 FROM tbl_works WHERE company_name = 'Small Bank Corporation');
