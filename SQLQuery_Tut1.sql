@@ -12,7 +12,7 @@
 --					Figure:Employee Database
 
 --Q1.	Give an SQL schema deﬁnition for the employee database of the above figure. Choose an appropriate primary key 
---		for each relation schema, and insert any other integrity constraints (for example, foreign keys) you ﬁnd necessary.
+--	for each relation schema, and insert any other integrity constraints (for example, foreign keys) you ﬁnd necessary.
 
 CREATE DATABASE db7;
 DROP DATABASE db7;
@@ -224,7 +224,7 @@ HAVING AVG(tbl_works.salary) > (SELECT AVG(salary) FROM tbl_works
 WHERE company_name = 'First Bank Corporation');
 
 -----------------------------------------------------------------------------------------------------------------------
---Q3. Consider the relational database of Figure 5. Give an expression in SQL for each of the following queries:
+--Q3.	Consider the relational database of Figure 5. Give an expression in SQL for each of the following queries:
 
 --(a) Modify the database so that Jones now lives in Newtown.
 UPDATE tbl_employee 
